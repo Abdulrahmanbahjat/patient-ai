@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مشروعي - نظام شكاوي المرضى</title>
+<style>
+/* تصميم بسيط سويته بنفسي */
+body{
+  font-family: Tahoma;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 15px;
+}
+.box{
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+h1{color: #0a7a3c; text-align: center;}
+p{color: #555; text-align: center;}
+textarea{
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+button{
+  background-color: #0a7a3c;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+#result{
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>🏥 نظام تحليل شكاوي المرضى</h1>
+  <p>مشروع ختامي - البرنامج التأسيسي</p>
+ 
+  <textarea id="textInput" placeholder="اكتب هنا شكوى المريض مثلا: انتظرت كثير في الاستقبال"></textarea>
+  <button onclick="myAnalysis()">حلل التعليق</button>
+  <div id="result">
+    <p id="originalText" style="font-weight:bold;"></p>
+    <p>التصنيف: <span id="cat"></span></p>
+    <p>المشاعر: <span id="sent"></span></p>
+    <p>ايش نسوي: <span id="advice"></span></p>
+  </div>
+  <hr>
+  <p style="font-size:14px;">جرب احد الامثلة:</p>
+  <button onclick="try1()" style="background:#eee;color:#333;font-size:13px;">انتظرت ساعتين في المستشفى </button>
+  <button onclick="try2()" style="background:#eee;color:#333;font-size:13px;">الدكتور في العيادة كان ممتاز وفهمني كل شي</button>
+  <button onclick="try3()" style="background:#eee;color:#333;font-size:13px;">دورة المياه في المستشفى مو نظيفة</button>
+  <p style="font-size:11px;margin-top:30px;text-align:center;color:#999;">تم تطويره بواسطة متدرب في برنامج اثر - 2026</p>
+</div>
+<script>
+// هذا الكود كتبته بعد ما خلصت اسبوع معالجة اللغات الطبيعية
+function myAnalysis(){
+  var text = document.getElementById("textInput").value;
+  if(text == ""){alert("لازم تكتب شي اول");return;}
+  var category = ""; var advice = "";
+  if(text.includes("انتظار") || text.includes("انتظرت") || text.includes("تأخر") || text.includes("ساعة") || text.includes("موعد")){
+    category = "⏰ مشكلة في وقت الانتظار"; advice = "لازم نحسن المواعيد في المستشفى";
+  } else if(text.includes("دكتور") || text.includes("ممرض") || text.includes("استقبال") || text.includes("موظف")){
+    category = "👨‍⚕️ تعامل الطاقم"; advice = "نتابع تقييم الطاقم";
+  } else{category = "🧹 النظافة"; advice = "نبلغ قسم النظافة";}
+  var goodWords = ["ممتاز", "كويس", "رائع", "شكرا", "ممتازة", "الله يجزاه"];
+  var isGood = false;
+  for(var i=0; i<goodWords.length; i++){if(text.includes(goodWords[i])){isGood = true;break;}}
+  var feeling = "";
+  if(isGood){feeling = "ايجابي 😊";document.getElementById("result").style.background = "#d4edda";}
+  else{feeling = "سلبي 😠";document.getElementById("result").style.background = "#f8d7da";}
+  document.getElementById("result").style.display = "block";
+  document.getElementById("originalText").innerText = text;
+  document.getElementById("cat").innerText = category;
+  document.getElementById("sent").innerText = feeling;
+  document.getElementById("advice").innerText = advice;
+}
+function try1(){document.getElementById("textInput").value = "انتظرت ساعتين في مستشفى بدون ما احد يعلمني";myAnalysis();}
+function try2(){document.getElementById("textInput").value = "الدكتور في العيادة كان ممتاز وفهمني كل شي الله يجزاه خير";myAnalysis();}
+function try3(){document.getElementById("textInput").value = "دورة المياه في المستشفى مو نظيفة ابدا";myAnalysis();}
+</script>
+</body>
+</html>
